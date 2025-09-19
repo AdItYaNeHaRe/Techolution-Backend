@@ -14,7 +14,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: [
+      "https://techolution-frontend.vercel.app",
+      "https://techolution-frontend-git-main-adityanehares-projects.vercel.app",
+      "http://localhost:3000",
+    ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
