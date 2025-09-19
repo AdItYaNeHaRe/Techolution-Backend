@@ -14,7 +14,7 @@
   "dependencies": {
     "@arcjet/inspect": "^1.0.0-beta.11",
     "@arcjet/node": "^1.0.0-beta.11",
-    "bcrypt": "^6.0.0",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^4.21.2",
