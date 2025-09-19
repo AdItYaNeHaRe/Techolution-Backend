@@ -8,6 +8,8 @@ import routes from "../routes/index.js";
 
 dotenv.config();
 
+console.log("Starting Vercel serverless function...");
+
 const app = express();
 
 app.use(
@@ -20,24 +22,31 @@ app.use(
 app.use(morgan("dev"));
 
 // db connection
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log("BD Connected successfully."))
-  .catch((err) => console.log("Failed to connect to DB:", err));
+try {
+  await mongoose.connect(process.env.MONGODB_URI);
+  console.log("DB Connected successfully.");
+} catch (err) {
+  console.error("Failed to connect to DB:", err);
+}
 
 app.use(express.json());
 
 app.get("/", async (req, res) => {
-  res.status(200).json({
-    message: "Welcome to Techolution API",
-  });
+  try {
+    res.status(200).json({
+      message: "Welcome to Techolution API",
+    });
+  } catch (err) {
+    console.error("Error in root route:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 // http:localhost:500/api-v1/
 app.use("/api-v1", routes);
 
 // error middleware
 app.use((err, req, res, next) => {
-  console.log(err.stack);
+  console.error("Error middleware:", err.stack);
   res.status(500).json({ message: "Internal server error" });
 });
 
@@ -47,5 +56,7 @@ app.use((req, res) => {
     message: "Not found",
   });
 });
+
+console.log("Vercel serverless function initialized.");
 
 export default app;
